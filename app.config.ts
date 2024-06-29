@@ -36,8 +36,8 @@ export const ClientRoutes = {
   signup: '/signup',
   dashboard: {
     home: '/dashboard',
-    doneTasks: '/dashboard/tasks/done',
-    undoneTasks: '/dashboard/tasks/undone',
+    pendingTasks: '/dashboard/pending',
+    completedTasks: '/dashboard/completed',
   },
 };
 

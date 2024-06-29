@@ -1,5 +1,9 @@
 import "@/app/ui/global.css";
 import ClientComponent from "./ClientComponent";
+import Sidebar from "@/components/Sidebar";
+import PendingIcon from "@/components/PendingIcon";
+import CompletedIcon from "@/components/CompletedIcon";
+import LogoImage from "@/components/LogoImage";
 
 export default function Layout({
   children,
@@ -19,6 +23,23 @@ export default function Layout({
     { n: 0, color: 'bg-red-200' },
   ];
 
+  const navItems = [
+    {
+      label: 'Pending',
+      href: '#',
+      Icon: PendingIcon,
+    },
+    {
+      label: 'Completed',
+      href: '#',
+      Icon: CompletedIcon,
+    },
+  ];
+
+  const brand = {
+    Icon: LogoImage,
+  };
+
   return (
     <html lang="en">
       <body className="grid min-h-screen grid-rows-10">
@@ -27,6 +48,9 @@ export default function Layout({
             return <p key={i} className={row.color}>{row.n}</p>
           })
         */}
+        <div className="pl-4">
+          <Sidebar navItems={navItems} brand={brand}/>
+        </div>
         {/* <p className="bg-green-200">{0}</p> */}
         <p className="bg-red-200">1</p>
         <p className="row-span-2 bg-blue-200">0 and 2</p>

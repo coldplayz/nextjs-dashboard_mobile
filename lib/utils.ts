@@ -44,6 +44,36 @@ export function createBreadcrumbItems(
 }
 
 /**
+ * Ensures a function is only run after the specified delay interval.
+ *
+ * clbk: Function
+ * delay: number (ms)
+ */
+export function debounceFunc(clbk: { [k: string]: any }, delay: number) {
+  const state = {
+    timedOut: true,
+  };
+  const nullFunc: any = () => {};
+  const startTimeout = () => {
+    setTimeout(() => {
+      state.timedOut = true;
+    }, delay);
+  };
+
+  return new Proxy(clbk, {
+    get(target: any, key: string) {
+      if (state.timedOut) {
+        state.timedOut = false;
+        startTimeout(); // can call again after delay
+        return clbk[key]; // execute on leading edge of delay
+      }
+
+      return nullFunc;
+    },
+  });
+}
+
+/**
  * Join together pieces of a URL path. Note: `/`s are regarded as delimiters.
  */
 /*

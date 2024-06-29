@@ -6,13 +6,9 @@ import { fetchBE } from "@/lib/actions";
 
 const log = console.log; // SCAFF;
 
-export async function getUnpaidLoans() {
-  const query = {
-    hasPaid: 'false',
-  };
-
+export async function getTasks() {
   const res = await fetchBE(
-    getApiEndpoint(ops.loans.findAll, undefined, query),
+    getApiEndpoint(ops.tasks.find),
     'GET',
   );
 

@@ -1,10 +1,16 @@
-import { redirect } from "next/navigation";
+// import { redirect } from "next/navigation";
 
+import { Toaster } from "@/components/ui/sonner"
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import "@/app/ui/global.css";
 import { inter } from "@/app/ui/fonts";
 import BreadCrumbs from "@/components/BreadCrumbs";
+import Sidebar from "@/components/Sidebar";
+import PendingIcon from "@/components/PendingIcon";
+import CompletedIcon from "@/components/CompletedIcon";
+import LogoImage from "@/components/LogoImage";
+import { ClientRoutes } from "@/app.config";
 // import { getMe } from "@/lib/apis/backend/get-me";
 // import { ClientRoutes } from "@/app.config";
 
@@ -27,6 +33,23 @@ export default function RootLayout({
 
   // console.log(me); // SCAFF
 
+  const navItems = [
+    {
+      label: 'Pending',
+      href: ClientRoutes.dashboard.pendingTasks,
+      Icon: PendingIcon,
+    },
+    {
+      label: 'Completed',
+      href: ClientRoutes.dashboard.completedTasks,
+      Icon: CompletedIcon,
+    },
+  ];
+
+  const brand = {
+    Icon: LogoImage,
+  };
+
   return (
     <html lang="en">
       <body className={`grid min-h-screen grid-rows-12 ${inter.className} antialiased bg-gray-100`}>
@@ -34,19 +57,22 @@ export default function RootLayout({
         {/* Header */}
         <div className="">
           <NavBar
-            CTALabel="Sign Out"
-            CTAHref="#"
-          />
+          >
+            <Sidebar navItems={navItems} brand={brand} />
+          </NavBar>
         </div>
 
         <div className="p-5 row-span-10">
-          <BreadCrumbs />
-          <main>
-            {children}
-          </main>
+          <div className="space-y-5">
+            <BreadCrumbs />
+            <main>
+              {children}
+            </main>
+          </div>
         </div>
 
         <Footer />
+        <Toaster richColors expand position="top-center" />
       </body>
     </html>
   )

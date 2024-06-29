@@ -3,7 +3,7 @@
 import { join } from "path";
 
 import { x2 } from "./serverApi";
-// const x3 = window.location.href;
+const x3 = window.location.href;
 
 export default function Component() {
   const x = join('/my', 'joined', 'path');

@@ -1,3 +1,5 @@
+declare module 'lodash';
+
 type LoginFormState = {
   errors?: {
     email?: string[];
@@ -23,6 +25,16 @@ type SignupFormState = {
   apiError?: string,
 };
 
+type FormState = {
+  success?: boolean,
+  validationErrors?: {
+    [k: string]: string[],
+  },
+  // general messages
+  clientErrorMessage?: string,
+  apiErrorMessage?: string,
+};
+
 type CTAAuthLabel = 'Sign In' | 'Sign Up' | 'Sign Out' | 'Get Started';
 type CTALinkLabel = CTAAuthLabel | 'Pay Up' | 'Request Loan';
 
@@ -38,4 +50,10 @@ type BackendMethods = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 type FetchOptsBE = {
   cache?: boolean;
+  redirectOn401?: boolean;
+};
+
+type CreateTaskDTO = {
+  description: string;
+  userId?: string;
 };

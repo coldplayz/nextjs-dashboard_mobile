@@ -177,11 +177,40 @@ export async function signoutUser() {
   await fetchBE(
     getApiEndpoint(ops.auth.signout),
     'POST',
+    undefined,
+    { redirectOn401: false },
   );
 
   // Signout from client/frontend; clears NextAuth client...
   // ...session which store backend tokens and user identity
   await signOut();
+}
+
+export async function createTask(
+  currState: FormState,
+  formData: FormData
+) {
+  const data: CreateTaskDTO = {
+    description: formData.get('description') as string,
+    userId: formData.get('userId') as string || undefined, // for admins only
+  };
+
+  const res = await fetchBE(
+    getApiEndpoint(ops.tasks.create),
+    'POST',
+    data,
+  );
+
+  if (!res.ok) {
+    return {
+      success: false,
+      apiErrorMessage: 'Unable to create task. Please try again',
+    };
+  } else {
+    return { success: true };
+  }
+
+  return {};
 }
 
 /**
@@ -191,7 +220,9 @@ export async function fetchBE(
   url: string,
   method: BackendMethods,
   body: string | object = '',
-  options: FetchOptsBE = {}
+  options: FetchOptsBE = {
+    redirectOn401: true,
+  },
 ) {
   // const allCookies = cookies().getAll();
   // const atkn = cookies().get('accessToken')?.value;
@@ -200,7 +231,7 @@ export async function fetchBE(
 
   // log('#####\n', session, '===', allCookies, '#####'); // SCAFF
 
-  return fetch(url, {
+  const res = await fetch(url, {
     method,
     headers: {
       'Content-Type': 'application/json',
@@ -209,4 +240,25 @@ export async function fetchBE(
     body: body ? JSON.stringify(body) : undefined,
     cache: options.cache ? 'force-cache' : 'no-store',
   });
+
+  // await signOut();
+
+  if (options.redirectOn401) {
+    // Redirect the user to sign in
+    if (res.status === 401) await signoutUser();
+  }
+
+  return res;
+}
+
+export async function getTasks() {
+  const res = await fetchBE(
+    getApiEndpoint(ops.tasks.find),
+    'GET',
+  );
+
+  const data = await res.json();
+  // log(data); // SCAFF
+
+  return data.data;
 }
