@@ -33,6 +33,7 @@ type FormState = {
   // general messages
   clientErrorMessage?: string,
   apiErrorMessage?: string,
+  __v: number,
 };
 
 type CTAAuthLabel = 'Sign In' | 'Sign Up' | 'Sign Out' | 'Get Started';

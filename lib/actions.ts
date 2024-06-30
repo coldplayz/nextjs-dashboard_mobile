@@ -205,12 +205,15 @@ export async function createTask(
     return {
       success: false,
       apiErrorMessage: 'Unable to create task. Please try again',
+      __v: currState.__v + 1, // use toast
     };
   } else {
-    return { success: true };
+    return { success: true, __v: currState.__v + 1 };
   }
 
-  return {};
+  return {
+    __v: currState.__v + 1, // use toast
+  };
 }
 
 /**
@@ -243,10 +246,12 @@ export async function fetchBE(
 
   // await signOut();
 
+  /*
   if (options.redirectOn401) {
     // Redirect the user to sign in
     if (res.status === 401) await signoutUser();
   }
+  */
 
   return res;
 }
@@ -257,8 +262,12 @@ export async function getTasks() {
     'GET',
   );
 
+  /*
   const data = await res.json();
   // log(data); // SCAFF
 
   return data.data;
+  */
+
+  return res;
 }

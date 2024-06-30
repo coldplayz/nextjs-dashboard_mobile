@@ -1,12 +1,18 @@
-// import CreateTaskForm from "@/components/CreateTaskForm";
 import CreateTaskDialog from "@/components/CreateTaskDialog";
 import PendingTasksOverview from "@/components/PendingTasksOverview";
 import CompletedTasksOverview from "@/components/CompletedTasksOverview";
 // import { getTasks } from "@/lib/apis/backend/get-tasks";
-import { getTasks } from "@/lib/actions";
+import { signoutUser, getTasks } from "@/lib/actions";
+import { v4 } from "uuid";
 
 export default async function Page() {
-  const tasksData: any[] = await getTasks();
+  // const tasksData: any[] = await getTasks();
+  const res = await getTasks();
+  if (res.status === 401) return await signoutUser();
+
+  const id = v4();
+
+  const tasksData: any[] = (await res.json()).data;
   const tasks = tasksData || [];
   const pendingTasks = tasks.filter((task) => !task.done);
   const completedTasks = tasks.filter((task) => task.done);
@@ -17,12 +23,12 @@ export default async function Page() {
         <h1 className="text-3xl font-bold">Welcome Home!</h1>
         <p className="text-muted-foreground text-center tracking-tight">You can create new tasks, or see an overview of all your existing tasks.</p>
         <div className="w-5/6">
-          <CreateTaskDialog />
+          <CreateTaskDialog key={id} />
         </div>
       </div>
 
       <div className="space-y-3">
-        <h2 className="text-xl font-bold">Tasks</h2>
+        <h2 className="text-xl font-bold">Task Summaries</h2>
         <div className="p-4 pt-8 bg-white rounded-lg shadow-lg">
           <PendingTasksOverview numPending={pendingTasks.length} />
         </div>

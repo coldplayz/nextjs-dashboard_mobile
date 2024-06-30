@@ -17,12 +17,12 @@ export default function CompletedTasksOverview({
       </div>
       <div className="flex flex-col items-center">
         <h3 className="font-bold text-primary">Completed</h3>
-        <p className="text-muted-foreground">{`You have {numCompleted} completed tasks.`}</p>
+        <p className="text-muted-foreground">{`You have ${numCompleted} completed tasks.`}</p>
       </div>
       <div className="w-full">
         {
           numCompleted > 0
-          ? <CTALink label="See more" link={ClientRoutes.dashboard.completedTasks} />
+          ? <CTALink label="See more" link={ClientRoutes.dashboard.completedTasks} className="w-full" />
           : <CreateTaskDialog />
         }
       </div>

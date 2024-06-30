@@ -12,8 +12,12 @@ export async function getTasks() {
     'GET',
   );
 
+  /*
   const data = await res.json();
   // log(data); // SCAFF
 
   return data.data;
+  */
+
+  return res;
 }

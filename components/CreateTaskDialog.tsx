@@ -3,11 +3,12 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-// import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 import { toast } from "sonner";
 import { CiCirclePlus } from "react-icons/ci";
 // import * as _ from "lodash";
+// import { v4 } from "uuid";
 
 import { createTask } from "@/lib/actions";
 import { debounceFunc } from "@/lib/utils";
@@ -24,31 +25,46 @@ import {
 
 const debouncedToast = debounceFunc(toast, 1000);
 
-export default function CreateTaskForm() {
-  // const [inputState, setInputState] = useState('');
-  const initialState: FormState = {};
+export default function CreateTaskDialog() {
+  const [inputState, setInputState] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
+  const initialState: FormState = { __v: 0 };
   const [formState, dispatch] = useFormState(
     createTask,
     initialState
   );
+  const lastVersion = useRef(0);
+  // const id = v4();
 
-  // console.log(formState); // SCAFF
-  if (formState.success) debouncedToast.success('Task created successfully!');
-  if (formState.success === false) debouncedToast.error(
-    formState.apiErrorMessage
-    || formState.clientErrorMessage
-    || 'Something went wrong'
-  );
+  useEffect(() => {
+    if (formState.__v !== lastVersion.current) {
+      if (formState.success) {
+        setIsOpen(false);
+      }
 
-  /*
-  const handleSubmit = () => {
-    setInputState('');
+      // Mark current form state as stale.
+      lastVersion.current = formState.__v;
+    }
+  }, [formState.__v, formState.success]);
+
+  // console.log(id); // SCAFF
+  if (formState.__v !== lastVersion.current) {
+    // Just returned with state update from server action...
+    if (formState.success) debouncedToast.success('Task created successfully!');
+    if (formState.success === false) debouncedToast.error(
+      formState.apiErrorMessage
+      || formState.clientErrorMessage
+      || 'Something went wrong'
+    );
+  } // ...else, stale state; don't toast.
+
+  const handleChange = (e: any) => {
+    setInputState(e.target?.value);
   };
-  */
 
   return (
     <div className="w-full">
-      <Dialog>
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger className="w-full" asChild>
           <Button className="flex gap-3">
             <CiCirclePlus className="w-6 h-6" />
@@ -65,6 +81,7 @@ export default function CreateTaskForm() {
           <div className="w-full">
             <form
               action={dispatch}
+              // key={id}
               className="flex flex-col items-center gap-y-6"
             >
               <div className="w-full">
@@ -73,8 +90,12 @@ export default function CreateTaskForm() {
                   id="description"
                   type="text"
                   name="description"
-                  value={formState.success ? '' : undefined}
+                  // value={formState.success ? '' : inputState}
+                  value={inputState}
                   placeholder="Enter the task description"
+                  // key={formState.success ? v4() : 'error'}
+                  // key={id}
+                  onChange={handleChange}
                   required
                 />
                 <div id="description-error" aria-live="polite" aria-atomic="true">

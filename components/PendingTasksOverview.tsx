@@ -22,7 +22,7 @@ export default function PendingTasksOverview({
       <div className="w-full">
         {
           numPending > 0
-          ? <CTALink label="See more" link={ClientRoutes.dashboard.pendingTasks} />
+          ? <CTALink label="See more" link={ClientRoutes.dashboard.pendingTasks} className="w-full" />
           : <CreateTaskDialog />
         }
       </div>
