@@ -211,6 +211,8 @@ export async function createTask(
     return { success: true, __v: currState.__v + 1 };
   }
 
+  revalidatePath(ClientRoutes.dashboard.home);
+
   return {
     __v: currState.__v + 1, // use toast
   };

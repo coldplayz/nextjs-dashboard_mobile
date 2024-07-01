@@ -3,14 +3,15 @@ import PendingTasksOverview from "@/components/PendingTasksOverview";
 import CompletedTasksOverview from "@/components/CompletedTasksOverview";
 // import { getTasks } from "@/lib/apis/backend/get-tasks";
 import { signoutUser, getTasks } from "@/lib/actions";
-import { v4 } from "uuid";
+// import { v4 } from "uuid";
 
-export default async function Page() {
+export default async function DashboardPage() {
   // const tasksData: any[] = await getTasks();
   const res = await getTasks();
   if (res.status === 401) return await signoutUser();
 
-  const id = v4();
+  // const id = v4();
+  console.log('rendering dashboard...'); // SCAFF
 
   const tasksData: any[] = (await res.json()).data;
   const tasks = tasksData || [];
@@ -23,7 +24,7 @@ export default async function Page() {
         <h1 className="text-3xl font-bold">Welcome Home!</h1>
         <p className="text-muted-foreground text-center tracking-tight">You can create new tasks, or see an overview of all your existing tasks.</p>
         <div className="w-5/6">
-          <CreateTaskDialog key={id} />
+          <CreateTaskDialog />
         </div>
       </div>
 

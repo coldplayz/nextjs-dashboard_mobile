@@ -41,6 +41,10 @@ export const ClientRoutes = {
   },
 };
 
+export const DashboardActions = {
+  TRIGGERED_RENDER: 'triggeredRender',
+};
+
 type QueryObj = Record<string, string>;
 
 /**

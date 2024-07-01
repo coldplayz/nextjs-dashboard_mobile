@@ -58,3 +58,9 @@ type CreateTaskDTO = {
   description: string;
   userId?: string;
 };
+
+type DashboardActionType = 'triggerRender';
+type DashboardAction = {
+  type: string;
+  [k: string]: any;
+};

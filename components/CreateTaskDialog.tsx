@@ -10,7 +10,7 @@ import { CiCirclePlus } from "react-icons/ci";
 // import * as _ from "lodash";
 // import { v4 } from "uuid";
 
-import { createTask } from "@/lib/actions";
+import { createTask, getTasks } from "@/lib/actions";
 import { debounceFunc } from "@/lib/utils";
 import { LoadingSpinner } from "@/components/ui/gb-spinner";
 import {
@@ -22,6 +22,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useDashboardDispatch } from "@/lib/providers/DashboardProvider";
+import { DashboardActions } from "@/app.config";
 
 const debouncedToast = debounceFunc(toast, 1000);
 
@@ -33,19 +35,23 @@ export default function CreateTaskDialog() {
     createTask,
     initialState
   );
+  const dashboardDispatch = useDashboardDispatch();
   const lastVersion = useRef(0);
   // const id = v4();
 
   useEffect(() => {
     if (formState.__v !== lastVersion.current) {
       if (formState.success) {
+        dashboardDispatch({
+          type: DashboardActions.TRIGGERED_RENDER,
+        });
         setIsOpen(false);
       }
 
       // Mark current form state as stale.
       lastVersion.current = formState.__v;
     }
-  }, [formState.__v, formState.success]);
+  }, [formState.__v, formState.success, dashboardDispatch]);
 
   // console.log(id); // SCAFF
   if (formState.__v !== lastVersion.current) {
