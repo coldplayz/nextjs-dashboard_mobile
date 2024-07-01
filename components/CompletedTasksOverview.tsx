@@ -1,15 +1,23 @@
+"use client";
+
+import { useTasks } from "@/lib/providers/TasksProvider";
+
 import CompletedIcon from "@/components/CompletedIcon";
 import CreateTaskDialog from "@/components/CreateTaskDialog";
 import CTALink from "@/components/CTALink";
 import { ClientRoutes } from "@/app.config";
 
+/*
 type Props = {
   numCompleted: number,
 };
+*/
 
-export default function CompletedTasksOverview({
-  numCompleted,
-}: Props) {
+export default function CompletedTasksOverview() {
+  const tasks = useTasks();
+  const completedTasks = tasks.filter((task) => task.done);
+  const numCompleted = completedTasks.length;
+
   return (
     <div className="flex flex-col items-center gap-6">
       <div className="px-2 py-3 bg-green-50 rounded-lg">

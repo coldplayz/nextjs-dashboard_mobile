@@ -2,7 +2,7 @@ import CreateTaskDialog from "@/components/CreateTaskDialog";
 import PendingTasksOverview from "@/components/PendingTasksOverview";
 import CompletedTasksOverview from "@/components/CompletedTasksOverview";
 // import { getTasks } from "@/lib/apis/backend/get-tasks";
-import { signoutUser, getTasks } from "@/lib/actions";
+// import { signoutUser, getTasks } from "@/lib/actions";
 // import { v4 } from "uuid";
 
 export default async function DashboardPage() {
@@ -13,10 +13,10 @@ export default async function DashboardPage() {
   // const id = v4();
   console.log('rendering dashboard...'); // SCAFF
 
-  const tasksData: any[] = (await res.json()).data;
-  const tasks = tasksData || [];
-  const pendingTasks = tasks.filter((task) => !task.done);
-  const completedTasks = tasks.filter((task) => task.done);
+  // const tasksData: any[] = (await res.json()).data;
+  // const tasks = tasksData || [];
+  // const pendingTasks = tasks.filter((task) => !task.done);
+  // const completedTasks = tasks.filter((task) => task.done);
 
   return (
     <div className="flex flex-col gap-20">
@@ -31,10 +31,10 @@ export default async function DashboardPage() {
       <div className="space-y-3">
         <h2 className="text-xl font-bold">Task Summaries</h2>
         <div className="p-4 pt-8 bg-white rounded-lg shadow-lg">
-          <PendingTasksOverview numPending={pendingTasks.length} />
+          <PendingTasksOverview />
         </div>
         <div className="p-4 pt-8 bg-white rounded-lg shadow-lg">
-          <CompletedTasksOverview numCompleted={completedTasks.length} / >
+          <CompletedTasksOverview />
         </div>
       </div>
     </div>

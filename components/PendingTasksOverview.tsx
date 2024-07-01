@@ -1,15 +1,23 @@
+"use client";
+
+import { useTasks } from "@/lib/providers/TasksProvider";
+
 import PendingIcon from "@/components/PendingIcon";
 import CTALink from "@/components/CTALink";
 import { ClientRoutes } from "@/app.config";
 import CreateTaskDialog from "@/components/CreateTaskDialog";
 
+/*
 type Props = {
   numPending: number,
 };
+*/
 
-export default function PendingTasksOverview({
-  numPending,
-}: Props) {
+export default function PendingTasksOverview() {
+  const tasks = useTasks();
+  const pendingTasks = tasks.filter((task) => !task.done);
+  const numPending = pendingTasks.length;
+
   return (
     <div className="flex flex-col items-center gap-6">
       <div className="px-2 py-3 bg-amber-50 rounded-lg">

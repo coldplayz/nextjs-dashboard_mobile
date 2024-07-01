@@ -41,8 +41,10 @@ export const ClientRoutes = {
   },
 };
 
-export const DashboardActions = {
-  TRIGGERED_RENDER: 'triggeredRender',
+export const TaskActions = {
+  CREATE: 'createTask',
+  UPDATE: 'updateTask',
+  DELETE: 'deleteTask',
 };
 
 type QueryObj = Record<string, string>;
