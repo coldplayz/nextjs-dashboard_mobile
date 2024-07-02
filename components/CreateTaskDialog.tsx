@@ -22,8 +22,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useDashboardDispatch } from "@/lib/providers/DashboardProvider";
-import { DashboardActions } from "@/app.config";
+import { useTaskDispatch } from "@/lib/providers/TasksProvider";
+import { TaskActions } from "@/app.config";
 
 const debouncedToast = debounceFunc(toast, 1000);
 
@@ -35,15 +35,17 @@ export default function CreateTaskDialog() {
     createTask,
     initialState
   );
-  const dashboardDispatch = useDashboardDispatch();
+  const taskDispatch = useTaskDispatch();
   const lastVersion = useRef(0);
   // const id = v4();
 
   useEffect(() => {
     if (formState.__v !== lastVersion.current) {
       if (formState.success) {
-        dashboardDispatch({
-          type: DashboardActions.TRIGGERED_RENDER,
+        // console.log(formState.payload); // SCAFF
+        taskDispatch({
+          type: TaskActions.CREATE,
+          payload: formState.payload,
         });
         setIsOpen(false);
       }
@@ -51,7 +53,7 @@ export default function CreateTaskDialog() {
       // Mark current form state as stale.
       lastVersion.current = formState.__v;
     }
-  }, [formState.__v, formState.success, dashboardDispatch]);
+  }, [formState.__v, formState.success, formState.payload, taskDispatch]);
 
   // console.log(id); // SCAFF
   if (formState.__v !== lastVersion.current) {

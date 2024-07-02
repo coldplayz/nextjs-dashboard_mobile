@@ -208,7 +208,12 @@ export async function createTask(
       __v: currState.__v + 1, // use toast
     };
   } else {
-    return { success: true, __v: currState.__v + 1 };
+    const payload = await res.json();
+    return {
+      success: true,
+      payload: payload.data,
+      __v: currState.__v + 1,
+    };
   }
 
   revalidatePath(ClientRoutes.dashboard.home);

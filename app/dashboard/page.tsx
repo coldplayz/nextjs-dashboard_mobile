@@ -7,11 +7,11 @@ import CompletedTasksOverview from "@/components/CompletedTasksOverview";
 
 export default async function DashboardPage() {
   // const tasksData: any[] = await getTasks();
-  const res = await getTasks();
-  if (res.status === 401) return await signoutUser();
+  // const res = await getTasks();
+  // if (res.status === 401) return await signoutUser();
 
   // const id = v4();
-  console.log('rendering dashboard...'); // SCAFF
+  // console.log('rendering dashboard...'); // SCAFF
 
   // const tasksData: any[] = (await res.json()).data;
   // const tasks = tasksData || [];

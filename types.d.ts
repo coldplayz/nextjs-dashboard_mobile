@@ -27,6 +27,7 @@ type SignupFormState = {
 
 type FormState = {
   success?: boolean,
+  payload?: any, // from the backend
   validationErrors?: {
     [k: string]: string[],
   },
