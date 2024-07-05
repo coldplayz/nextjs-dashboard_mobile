@@ -74,6 +74,16 @@ export function debounceFunc(clbk: { [k: string]: any }, delay: number) {
 }
 
 /**
+ * Coverts true and false, as string, to boolean.
+ */
+export function toBool(inp: boolean | string) {
+  if (inp === 'true' || inp === true) return true;
+  if (inp === 'false' || inp === false) return false;
+
+  throw new Error('Arg must be true or false, as boolean or string literals.');
+}
+
+/**
  * Join together pieces of a URL path. Note: `/`s are regarded as delimiters.
  */
 /*

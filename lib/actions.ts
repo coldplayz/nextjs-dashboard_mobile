@@ -9,7 +9,7 @@ import {
   LoginFormSchema,
   SignupFormSchema,
 } from "@/lib/zod-schemas";
-import { delay } from "@/lib/utils";
+import { delay, toBool } from "@/lib/utils";
 import {
   getApiEndpoint,
   ops,
@@ -211,7 +211,7 @@ export async function createTask(
     const payload = await res.json();
     return {
       success: true,
-      payload: payload.data,
+      payload: payload.data, // created task
       __v: currState.__v + 1,
     };
   }
@@ -220,6 +220,64 @@ export async function createTask(
 
   return {
     __v: currState.__v + 1, // use toast
+  };
+}
+
+export async function updateTask(
+  currState: FormState,
+  formData: FormData
+) {
+  const done = toBool(formData.get('done') as string);
+  const taskId = formData.get('taskId') as string || '';
+  // log(done, typeof done); // SCAFF
+
+  const data: UpdateTaskCompletionDTO = { done };
+
+  const res = await fetchBE(
+    getApiEndpoint(ops.tasks.edit, taskId),
+    'POST',
+    data,
+  );
+
+  if (res.status === 404) {
+    return {
+      success: false,
+      apiErrorMessage: 'Task not found. Try reloading the page',
+      __v: currState.__v + 1, // use toast
+    };
+  } else if (res.status === 401) {
+    // TODO: for 401, invoke refresh-token flow
+    return {
+      success: false,
+      apiErrorMessage: 'You are not authenticated. Try logging in',
+      __v: currState.__v + 1, // use toast
+    };
+  } else if (res.status === 403) {
+    return {
+      success: false,
+      apiErrorMessage: 'You are not permitted to perform this operation',
+      __v: currState.__v + 1, // use toast
+    };
+  } else if (!res.ok) {
+    log('response status code:', res.status); // SCAFF
+    return {
+      success: false,
+      apiErrorMessage: 'Something went wrong',
+      __v: currState.__v + 1, // use toast
+    };
+  } else {
+    const payload = await res.json();
+    return {
+      success: true,
+      payload: payload.data, // updated task
+      __v: currState.__v + 1,
+    };
+  }
+
+  revalidatePath(ClientRoutes.dashboard.home);
+
+  return {
+    __v: currState.__v + 1,
   };
 }
 

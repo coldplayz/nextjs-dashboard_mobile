@@ -60,6 +60,14 @@ type CreateTaskDTO = {
   userId?: string;
 };
 
+type EditTaskDTO = {
+  description?: string;
+};
+
+type UpdateTaskCompletionDTO = {
+  done: boolean,
+};
+
 type TaskActionType = 'triggerRender';
 type TaskAction = {
   type: string;
